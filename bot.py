@@ -1,6 +1,7 @@
 import turingChat
 
 from telegram.ext import Updater
+import telegram
 import logging
 
 logging.basicConfig(
@@ -17,22 +18,22 @@ def best(bot, update):
     bot.sendMessage(update.message.chat_id, text='Python is the best language ever.')
 
 
-def test(bot, update, args):
+def study(bot, update, args):
     chat_id = update.message.chat_id
     try:
         due = int(args[0])
         if due < 0:
-            bot.sendMessage(chat_id, text='Sorry you can not go back to the future')
+            bot.sendMessage(chat_id, text='好好學習！！！！')
 
         def alarm(bot):
-            bot.sendMessage(chat_id, text='Beep!')
+            bot.sendMessage(chat_id, text='時間到啦，可以休息一會')
 
         job_queue.put(alarm, due, repeat=False)
-        bot.sendMessage(chat_id, text='Timer successfully set!')
+        bot.sendMessage(chat_id, text='%s 開始學習了呢, %s秒以後再來找我哦'%(update.message.from_user.username,due))
     except IndexError:
-        bot.sendMessage(chat_id, text='Usage: /set <seconds>')
+        bot.sendMessage(chat_id, text='Usage: /study <seconds> \n設置學習時間\n好好學習，自習滿績人生巔峯！')
     except ValueError:
-        bot.sendMessage(chat_id, text='Usage: /set <seconds>')
+        bot.sendMessage(chat_id, text='Usage: /study <seconds> \n設置學習時間\n好好學習，自習滿績人生巔峯！')
 
         # bot.sendMessage(update.message.chat_id, text='%s' % update.message.chat_id)
 
@@ -78,11 +79,12 @@ def main():
     dp = my_updater.dispatcher
 
     command_list = {'start': start,
-                    'test': test,
+                    'study': study,
                     'best': best,
                     'worst': worst,
                     'echo': echo,
                     'chat': chat}
+
     for (command, function) in command_list.items():
         dp.addTelegramCommandHandler(command, function)
 
