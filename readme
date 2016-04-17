@@ -1,1 +1,10 @@
 This is a simple telegram bot.
+
+You can call @haoxiangpeng_bot to add it to your group or chat with him
+
+Some avaliable command:
+    '/study <seconds>  to study'
+    '/echo <message> to echo message'
+    '/worst to list worst language'
+    '/best to show the best language ever'
+    '/chat <message> to chat with bot freely'
