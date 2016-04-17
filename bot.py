@@ -37,13 +37,19 @@ def test(bot, update, args):
         # bot.sendMessage(update.message.chat_id, text='%s' % update.message.chat_id)
 
 
-def echo(bot, update):
-    bot.sendMessage(update.message.chat_id, text=update.message.text[5:])
+def echo(bot, update, args):
+    if len(args[0]):
+        send_message = 'Usage: /echo <message>'
+    else:
+        send_message = args[0]
+    bot.sendMessage(update.message.chat_id, text=send_message)
 
 
-def chat(bot, update):
-    chat_message = update.message.text[5:]
-    send_message = turingChat.turning_chat(chat_message, turing_key)
+def chat(bot, update, args):
+    if len(args[0]):
+        send_message = 'Usage: /chat <chat message>'
+    else:
+        send_message = turingChat.turning_chat(update.message.text[5:], turing_key)
     bot.sendMessage(update.message.chat_id, text=send_message)
 
 
