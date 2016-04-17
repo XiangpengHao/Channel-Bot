@@ -25,5 +25,5 @@ def turning_chat(message, key):
                                                                json_parsed_content['list'][2]['detailurl']
                                                                ))
     else:
-        return_message = 'Encountered unknown error'
+        return_message = '不要這樣啊，是要搞大新聞嗎'
     return return_message

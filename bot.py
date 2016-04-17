@@ -17,8 +17,24 @@ def best(bot, update):
     bot.sendMessage(update.message.chat_id, text='Python is the best language ever.')
 
 
-def help(bot, update):
-    bot.sendMessage(update.message.chat_id, text='This bot is created by Patrick Hao')
+def test(bot, update, args):
+    chat_id = update.message.chat_id
+    try:
+        due = int(args[0])
+        if due < 0:
+            bot.sendMessage(chat_id, text='Sorry you can not go back to the future')
+
+        def alarm(bot):
+            bot.sendMessage(chat_id, text='Beep!')
+
+        job_queue.put(alarm, due, repeat=False)
+        bot.sendMessage(chat_id, text='Timer successfully set!')
+    except IndexError:
+        bot.sendMessage(chat_id, text='Usage: /set <seconds>')
+    except ValueError:
+        bot.sendMessage(chat_id, text='Usage: /set <seconds>')
+
+        # bot.sendMessage(update.message.chat_id, text='%s' % update.message.chat_id)
 
 
 def echo(bot, update):
@@ -29,6 +45,10 @@ def chat(bot, update):
     chat_message = update.message.text[5:]
     send_message = turingChat.turning_chat(chat_message, turing_key)
     bot.sendMessage(update.message.chat_id, text=send_message)
+
+
+def worst(bot, update):
+    bot.sendMessage(update.message.chat_id, text='PHP is the worst language ever!!!!!!!!!')
 
 
 def get_key():
@@ -43,19 +63,26 @@ def get_key():
 
 
 def main():
+    global tele_key, turing_key, job_queue
+    tele_key, turing_key = get_key()
+    tele_key = tele_key[:-1]
+
     my_updater = Updater(tele_key)
+    job_queue = my_updater.job_queue
     dp = my_updater.dispatcher
-    dp.addTelegramCommandHandler("start", start)
-    dp.addTelegramCommandHandler("help", help)
-    dp.addTelegramCommandHandler("best", best)
-    dp.addTelegramCommandHandler("echo", echo)
-    dp.addTelegramCommandHandler("chat", chat)
+
+    command_list = {'start': start,
+                    'test': test,
+                    'best': best,
+                    'worst': worst,
+                    'echo': echo,
+                    'chat': chat}
+    for (command, function) in command_list.items():
+        dp.addTelegramCommandHandler(command, function)
 
     my_updater.start_polling()
     my_updater.idle()
 
 
 if __name__ == '__main__':
-    tele_key, turing_key = get_key()
-    tele_key = tele_key[:-1]
     main()
