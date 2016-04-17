@@ -1,7 +1,5 @@
-import turingChat
-
+import turingChat, math
 from telegram.ext import Updater
-import telegram
 import logging
 
 logging.basicConfig(
@@ -18,6 +16,30 @@ def best(bot, update):
     bot.sendMessage(update.message.chat_id, text='Python is the best language ever.')
 
 
+def calculate_permutations_and_combianations(bot, update, args):
+    if not len(args[0]):
+        send_message = 'Usage example:\n /AC 4C2\nResult: 6'
+    else:
+        try:
+            first_number = int(args[0][0])
+            second_number = int(args[0][2])
+            operation = args[0][1]
+            valid_operations = ['P', 'C', 'p', 'c', 'A', 'a']
+            if operation not in valid_operations:
+                raise ValueError
+            elif operation == 'C' or operation == 'c':
+                result = math.factorial(first_number) / \
+                         (math.factorial(second_number) * math.factorial(first_number - second_number))
+            else:
+                result = math.factorial(first_number) / math.factorial(first_number - second_number)
+            send_message = '%s(%s,%s) = %s' % (operation, first_number, second_number, int(result))
+        except ValueError:
+            send_message = 'Value error!\nUsage example:\n /PC 4C2\nResult: 6'
+        except IndexError:
+            send_message = 'Value error!\nUsage example:\n /PC 4C2\nResult: 6'
+    bot.sendMessage(update.message.chat_id, text=send_message)
+
+
 def study(bot, update, args):
     chat_id = update.message.chat_id
     try:
@@ -30,7 +52,7 @@ def study(bot, update, args):
             bot.sendMessage(chat_id, text='時間到啦，可以休息一會')
 
         job_queue.put(alarm, due, repeat=False)
-        bot.sendMessage(chat_id, text='%s 開始學習了呢, %s秒以後再來找我哦'%(update.message.from_user.username,due))
+        bot.sendMessage(chat_id, text='%s 開始學習了呢, %s秒以後再來找我哦' % (update.message.from_user.username, due))
     except IndexError:
         bot.sendMessage(chat_id, text='Usage: /study <seconds> \n設置學習時間\n好好學習，自習滿績人生巔峯！')
     except ValueError:
@@ -40,18 +62,19 @@ def study(bot, update, args):
 
 
 def echo(bot, update, args):
+    print(args[0])
     if len(args[0]):
-        send_message = 'Usage: /echo <message>'
-    else:
         send_message = args[0]
+    else:
+        send_message = 'Usage: /echo <message>'
     bot.sendMessage(update.message.chat_id, text=send_message)
 
 
 def chat(bot, update, args):
     if len(args[0]):
-        send_message = 'Usage: /chat <chat message>'
-    else:
         send_message = turingChat.turning_chat(update.message.text[5:], turing_key)
+    else:
+        send_message = 'Usage: /chat <chat message>'
     bot.sendMessage(update.message.chat_id, text=send_message)
 
 
@@ -84,7 +107,8 @@ def main():
                     'best': best,
                     'worst': worst,
                     'echo': echo,
-                    'chat': chat}
+                    'chat': chat,
+                    'AC': calculate_permutations_and_combianations}
 
     for (command, function) in command_list.items():
         dp.addTelegramCommandHandler(command, function)
