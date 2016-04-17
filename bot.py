@@ -24,6 +24,7 @@ def study(bot, update, args):
         due = int(args[0])
         if due < 0:
             bot.sendMessage(chat_id, text='好好學習！！！！')
+            return
 
         def alarm(bot):
             bot.sendMessage(chat_id, text='時間到啦，可以休息一會')
