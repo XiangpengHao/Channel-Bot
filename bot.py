@@ -1,4 +1,4 @@
-import turingChat, math,re
+import turingChat, math, re
 from telegram.ext import Updater
 import logging
 
@@ -21,18 +21,17 @@ def calculate_permutations_and_combianations(bot, update, args):
         send_message = 'Usage example:\n /AC 4C2\nResult: 6'
     else:
         try:
-            re_result=re.match(r'\d+(\w)\d+',args[0])
-            operation=re_result.group(1)
+            re_result = re.match(r'\d+(\w)\d+', args[0])
+            operation = re_result.group(1)
+            re_result = re.match(r'(\d+)%s(\d+)' % operation, args[0])
+            if len(re_result.group(1)) > 6 or len(re_result.group(2)) > 6:
+                raise ArithmeticError
+            first_number = int(re_result.group(1))
+            second_number = int(re_result.group(2))
             if operation == 'C':
-                re_result=re.match(r'(\d+)C(\d+)',args[0])
-                first_number=int(re_result.group(1))
-                second_number=int(re_result.group(2))
                 result = math.factorial(first_number) / \
                          (math.factorial(second_number) * math.factorial(first_number - second_number))
             elif operation == 'A':
-                re_result=re.match(r'(\d+)A(\d+)',args[0])
-                first_number=int(re_result.group(1))
-                second_number=int(re_result.group(2))
                 result = math.factorial(first_number) / math.factorial(first_number - second_number)
             else:
                 raise ValueError
@@ -41,6 +40,8 @@ def calculate_permutations_and_combianations(bot, update, args):
             send_message = 'Value error!\nUsage example:\n /AC 4C2\nResult: 6'
         except IndexError:
             send_message = 'Value error!\nUsage example:\n /AC 4C2\nResult: 6'
+        except ArithmeticError:
+            send_message='窩只能幫你算六位數以下的排列組合'
     bot.sendMessage(update.message.chat_id, text=send_message)
 
 
