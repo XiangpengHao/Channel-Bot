@@ -1,4 +1,4 @@
-import turingChat, math
+import turingChat, math,re
 from telegram.ext import Updater
 import logging
 
@@ -21,17 +21,21 @@ def calculate_permutations_and_combianations(bot, update, args):
         send_message = 'Usage example:\n /AC 4C2\nResult: 6'
     else:
         try:
-            first_number = int(args[0][0])
-            second_number = int(args[0][2])
-            operation = args[0][1]
-            valid_operations = ['P', 'C', 'p', 'c', 'A', 'a']
-            if operation not in valid_operations:
-                raise ValueError
-            elif operation == 'C' or operation == 'c':
+            re_result=re.match(r'\d+(\w)\d+',args[0])
+            operation=re_result.group(1)
+            if operation == 'C':
+                re_result=re.match(r'(\d+)C(\d+)',args[0])
+                first_number=int(re_result.group(1))
+                second_number=int(re_result.group(2))
                 result = math.factorial(first_number) / \
                          (math.factorial(second_number) * math.factorial(first_number - second_number))
-            else:
+            elif operation == 'A':
+                re_result=re.match(r'(\d+)A(\d+)',args[0])
+                first_number=int(re_result.group(1))
+                second_number=int(re_result.group(2))
                 result = math.factorial(first_number) / math.factorial(first_number - second_number)
+            else:
+                raise ValueError
             send_message = '%s(%s,%s) = %s' % (operation, first_number, second_number, int(result))
         except ValueError:
             send_message = 'Value error!\nUsage example:\n /AC 4C2\nResult: 6'
