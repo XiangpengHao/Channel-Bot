@@ -34,9 +34,9 @@ def calculate_permutations_and_combianations(bot, update, args):
                 result = math.factorial(first_number) / math.factorial(first_number - second_number)
             send_message = '%s(%s,%s) = %s' % (operation, first_number, second_number, int(result))
         except ValueError:
-            send_message = 'Value error!\nUsage example:\n /PC 4C2\nResult: 6'
+            send_message = 'Value error!\nUsage example:\n /AC 4C2\nResult: 6'
         except IndexError:
-            send_message = 'Value error!\nUsage example:\n /PC 4C2\nResult: 6'
+            send_message = 'Value error!\nUsage example:\n /AC 4C2\nResult: 6'
     bot.sendMessage(update.message.chat_id, text=send_message)
 
 
