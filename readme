@@ -1,10 +1,22 @@
-This is a simple telegram bot.
+# This is a simple telegram bot.
 
 You can call @haoxiangpeng_bot to add it to your group or chat with him
 
+
 Some avaliable command:
-    '/study <seconds>  to study'
-    '/echo <message> to echo message'
-    '/worst to list worst language'
-    '/best to show the best language ever'
-    '/chat <message> to chat with bot freely'
+    '/study <seconds>'  to study
+    '/echo <message>' to echo message
+    '/worst' to list worst language
+    '/best' to show the best language ever
+    '/chat <message>' to chat with bot freely
+    '/retrive' retrive message in the data base
+    '/AC <number1>C<number2>'Calculate Permutations and Combinations
+    '/start' Say hi
+
+Attention:
+    1. I will record all your conversations for anonymous use.
+    
+    2. You should genernate a 'key.txt' in your work folder,where
+       the first line should be telegram bot key
+       the second line should be turing bot key
+
