@@ -69,16 +69,18 @@ def study(bot, update, args):
 
         # bot.sendMessage(update.message.chat_id, text='%s' % update.message.chat_id)
 
+
 @run_async
 def message(bot, update, **kwargs):
     sleep(2)
-    chat_id=update.message.chat_id
-    user_info=[update.message.from_user.username,chat_id]
-    content_info=update.message.text
-    if write_into_the_database(user_info,content_info):
-        database_falg=True
+    chat_id = update.message.chat_id
+    user_info = [update.message.from_user.username, str(chat_id)]
+    content_info = update.message.text
+    print(str(user_info)+content_info)
+    if write_into_the_database(user_info, content_info):
+        database_falg = True
     else:
-        database_falg=False
+        database_falg = False
     bot.sendMessage(update.message.chat_id, text=str(database_falg))
 
 
@@ -101,8 +103,6 @@ def chat(bot, update, args):
 
 def worst(bot, update):
     bot.sendMessage(update.message.chat_id, text='PHP is the worst language ever!!!!!!!!!')
-
-
 
 
 def get_key():

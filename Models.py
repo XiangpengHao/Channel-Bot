@@ -1,5 +1,5 @@
 from peewee import *
-
+import datetime
 db = SqliteDatabase('chat_log.db')
 
 
@@ -15,7 +15,7 @@ class User(Model):
 class Content(Model):
     owner = ForeignKeyField(User, related_name='content')
     content = CharField()
-    post_time = DateField()
+    post_time = DateTimeField(default=datetime.datetime.now)
     is_spam = BooleanField()
 
     class Meta:
