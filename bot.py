@@ -1,6 +1,7 @@
 from telegram.ext.dispatcher import run_async
 from time import sleep
 import turingChat, math, re
+from telegram import ForceReply
 from telegram.ext import Updater
 import logging
 
@@ -72,16 +73,16 @@ def study(bot, update, args):
 
 @run_async
 def message(bot, update, **kwargs):
-    sleep(2)
+    sleep(1)
     chat_id = update.message.chat_id
     user_info = [update.message.from_user.username, str(chat_id)]
     content_info = update.message.text
-    print(str(user_info)+content_info)
+    print(str(user_info) + content_info)
     if write_into_the_database(user_info, content_info):
-        database_falg = True
+        database_flag = True
     else:
-        database_falg = False
-    bot.sendMessage(update.message.chat_id, text=str(database_falg))
+        database_flag = False
+    #bot.sendMessage(update.message.chat_id, text=str(database_flag))
 
 
 def echo(bot, update, args):
@@ -91,6 +92,15 @@ def echo(bot, update, args):
     else:
         send_message = 'Usage: /echo <message>'
     bot.sendMessage(update.message.chat_id, text=send_message)
+
+
+def retrive_it(bot, update):
+    chat_id=update.message.chat_id
+    if str(chat_id) != '132580810':
+        all_data_list='你沒有權限訪問數據庫噢~'
+    else:
+        all_data_list = retrive_from_database()
+    bot.sendMessage(update.message.chat_id, text=str(all_data_list))
 
 
 def chat(bot, update, args):
@@ -131,7 +141,8 @@ def main():
                     'worst': worst,
                     'echo': echo,
                     'chat': chat,
-                    'AC': calculate_permutations_and_combianations}
+                    'AC': calculate_permutations_and_combianations,
+                    'retrive': retrive_it}
 
     for (command, function) in command_list.items():
         dp.addTelegramCommandHandler(command, function)

@@ -43,4 +43,7 @@ def write_into_the_database(user_info, content_info):
 
 
 def retrive_from_database():
-    pass
+    all_data_list = []
+    for content in Content.select():
+        all_data_list.append(content.content)
+    return all_data_list
