@@ -1,6 +1,10 @@
+from telegram.ext.dispatcher import run_async
+from time import sleep
 import turingChat, math, re
 from telegram.ext import Updater
 import logging
+
+from play_with_database import *
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -41,7 +45,7 @@ def calculate_permutations_and_combianations(bot, update, args):
         except IndexError:
             send_message = 'Value error!\nUsage example:\n /AC 4C2\nResult: 6'
         except ArithmeticError:
-            send_message='窩只能幫你算六位數以下的排列組合'
+            send_message = '窩只能幫你算六位數以下的排列組合'
     bot.sendMessage(update.message.chat_id, text=send_message)
 
 
@@ -65,6 +69,18 @@ def study(bot, update, args):
 
         # bot.sendMessage(update.message.chat_id, text='%s' % update.message.chat_id)
 
+@run_async
+def message(bot, update, **kwargs):
+    sleep(2)
+    chat_id=update.message.chat_id
+    user_info=[update.message.from_user.username,chat_id]
+    content_info=update.message.text
+    if write_into_the_database(user_info,content_info):
+        database_falg=True
+    else:
+        database_falg=False
+    bot.sendMessage(update.message.chat_id, text=str(database_falg))
+
 
 def echo(bot, update, args):
     print(args[0])
@@ -85,6 +101,8 @@ def chat(bot, update, args):
 
 def worst(bot, update):
     bot.sendMessage(update.message.chat_id, text='PHP is the worst language ever!!!!!!!!!')
+
+
 
 
 def get_key():
@@ -117,6 +135,7 @@ def main():
 
     for (command, function) in command_list.items():
         dp.addTelegramCommandHandler(command, function)
+    dp.addTelegramMessageHandler(message)
 
     my_updater.start_polling()
     my_updater.idle()
