@@ -1,6 +1,6 @@
 from peewee import *
 import datetime
-db = SqliteDatabase('chat_log.db')
+db = SqliteDatabase('database/chat_log.db')
 
 
 class User(Model):

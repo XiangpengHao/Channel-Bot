@@ -47,3 +47,22 @@ def retrive_from_database():
     for content in Content.select():
         all_data_list.append(content.content)
     return all_data_list
+
+
+def statistic_today():
+    today_telegram_content = Content.select().where(
+       Content.post_time.day == datetime.datetime.now().day)
+    # today_telegram_content = Content.select().where(
+    #     Content.post_time.day == 20)
+    total_dict = {}
+    for each_content in today_telegram_content:
+        user_name = each_content.owner.user_name
+        if user_name not in total_dict:
+            total_dict[each_content.owner.user_name] = 1
+        else:
+            total_dict[each_content.owner.user_name] += 1
+
+    result_string = "Today's statistics: \n**************\n"
+    for content_owner, owner_frequency in total_dict.items():
+        result_string += '%s:    %s\n' % (content_owner, owner_frequency)
+    return result_string[:-1]
