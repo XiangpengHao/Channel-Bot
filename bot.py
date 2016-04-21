@@ -1,6 +1,6 @@
 from telegram.ext.dispatcher import run_async
 
-import turingChat
+import controllers
 from telegram.ext import Updater
 import logging
 import math
@@ -66,7 +66,7 @@ def study(bot, update, args):
         job_queue.put(alarm, due, repeat=False)
         bot.sendMessage(chat_id, text='%s 開始學習了呢, %s秒以後再來找我哦' % (update.message.from_user.username, due))
     except IndexError:
-        bot.sendMessage(chat_id, text='Usage: /study <seconds> \n設置學習時間\n好好學習，自習滿績人生巔峯！')
+        bot.sendMessage(chat_id, text='Usage: /study <seconds> \n設置學習時間\n好好學習，自習滿績人生巔峯！\nHacked')
     except ValueError:
         bot.sendMessage(chat_id, text='Usage: /study <seconds> \n設置學習時間\n好好學習，自習滿績人生巔峯！')
 
@@ -113,10 +113,16 @@ def retrive_it(bot, update):
 
 def chat(bot, update, args):
     if len(args[0]):
-        send_message = turingChat.turning_chat(update.message.text[5:], turing_key)
+        send_message = controllers.turning_chat(update.message.text[5:], turing_key)
     else:
         send_message = 'Usage: /chat <chat message>'
     bot.sendMessage(update.message.chat_id, text=send_message)
+
+
+@run_async
+def bgs_wlan_status(bot, update):
+    result_message = controllers.get_bgs_wlan_status()
+    bot.sendMessage(update.message.chat_id, text=result_message)
 
 
 def worst(bot, update):
@@ -150,7 +156,8 @@ def main():
                     'echo': echo,
                     'chat': chat,
                     'AC': calculate_permutations_and_combianations,
-                    'retrive': retrive_it}
+                    'retrive': retrive_it,
+                    'bgs': bgs_wlan_status}
 
     for (command, function) in command_list.items():
         dp.addTelegramCommandHandler(command, function)

@@ -14,8 +14,8 @@ def judge_if_spam_message(message):
     # judge from specific words
     spam_words = ['膜', '233', 'ym',
                   '垃圾', '辣鸡', 'fuck',
-                  '水笔', '。', 'WTF',
-                  'wtf']
+                  '水笔', 'WTF',
+                  'wtf','滑稽']
     for word in spam_words:
         if word in message:
             return True
