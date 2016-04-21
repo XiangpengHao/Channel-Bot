@@ -80,11 +80,17 @@ def message(bot, update, **kwargs):
     user_info = [update.message.from_user.username, str(chat_id)]
     content_info = update.message.text
     print(str(user_info) + content_info)
+    if judge_if_spam_message(content_info):
+        bot.sendMessage(update.message.chat_id, text='請好好學習，不要水群！')
+    else:
+        write_into_the_database(user_info, content_info)
+    '''
     if write_into_the_database(user_info, content_info):
         database_flag = True
     else:
         database_flag = False
         # bot.sendMessage(update.message.chat_id, text=str(database_flag))
+    '''
 
 
 def echo(bot, update, args):
