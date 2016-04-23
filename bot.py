@@ -80,6 +80,8 @@ def message(bot, update, **kwargs):
     user_info = [update.message.from_user.username, str(chat_id)]
     content_info = update.message.text
     print(str(user_info) + content_info)
+    if str(chat_id) != '-117000013':
+        return
     if judge_if_spam_message(content_info):
         bot.sendMessage(update.message.chat_id, text='請好好學習，不要水群！')
     else:
@@ -120,9 +122,11 @@ def chat(bot, update, args):
 
 
 @run_async
-def bgs_wlan_status(bot, update):
+def bgs_wlan_status(bot, update,**kwargs):
+    bot.sendMessage(update.message.chat_id,text='開始測試辣，要等待大約30秒才能出結果~')
     result_message = controllers.get_bgs_wlan_status()
     bot.sendMessage(update.message.chat_id, text=result_message)
+    sleep(2)
 
 
 def worst(bot, update):

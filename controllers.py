@@ -31,7 +31,7 @@ def turning_chat(message, key):
 
 def get_bgs_wlan_status():
     ping_response_dist = {}
-    hostname_list = ['www.zjuqsc.com',
+    hostname_list = ['www.qsc.zju.edu.cn',
                      'mirrors.zju.edu.cn',
                      'www.github.com',
                      'www.facebook.com',
@@ -40,20 +40,28 @@ def get_bgs_wlan_status():
                      'www.twitter.com',
                      'www.stackoverflow.com'
                      ]
+    host_nick_name_list = ['主站',
+                           '浙大源',
+                           'Gayhub',
+                           'Facebook',
+                           '百毒',
+                           '逼乎',
+                           'Twitter',
+                           'stackoverflow'
+                           ]
     for hostname in hostname_list:
-        raw_ping_response = str(os.popen('timeout 5 ping -c 3 %s' % hostname).readlines())
+        raw_ping_response = str(os.popen('timeout 3 ping -c 3 %s' % hostname).readlines())
 
         match_obj = re.compile(r'max/mdev = (.*?)/(.*?)/(.*?)/', re.S)
         re_result = re.findall(match_obj, raw_ping_response)
+        current_host_name=host_nick_name_list[hostname_list.index(hostname)]
         try:
-            ping_response_dist[hostname] = 'OK, avg: %s' % re_result[0][1]
+            ping_response_dist[current_host_name] = 'OK, avg: %s ms' % re_result[0][1]
         except IndexError:
-            ping_response_dist[hostname] = 'Timeout!'
+            ping_response_dist[current_host_name] = 'Timeout!'
         except Exception as error:
-            ping_response_dist[hostname] = error
-    result_info = '今天辦公室網掛了嗎？ \n**********'
+            ping_response_dist[current_host_name] = error
+    result_info = '今天辦公室網掛了嗎？ \n**********\n'
     for hostname, host_info in ping_response_dist.items():
-        result_info += '%s: %s ms\n' % (hostname, host_info)
+        result_info += '%s: %s\n' % (hostname, host_info)
     return result_info
-
-

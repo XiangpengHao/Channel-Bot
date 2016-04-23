@@ -39,7 +39,7 @@ def check_database():
 def write_into_the_database(user_info, content_info):
     check_database()
     try:
-        owned_user = User.get(User.user_id == user_info[1])
+        owned_user = User.get(User.user_name == user_info[0])
     except IntegrityError:
         owned_user = User.create(user_name=user_info[0], user_id=user_info[1], is_relative=True)
         owned_user.save()
