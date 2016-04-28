@@ -39,6 +39,8 @@ def check_database():
 def write_into_the_database(user_info, content_info):
     check_database()
     try:
+        if not user_info[0]:
+            user_info[0]='匿名用戶'
         owned_user = User.get(User.user_name == user_info[0])
     except IntegrityError:
         owned_user = User.create(user_name=user_info[0], user_id=user_info[1], is_relative=True)

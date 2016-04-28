@@ -1,5 +1,5 @@
 import urllib.parse, urllib.request, json, os
-import subprocess, re
+import subprocess, re, operator
 
 
 def turning_chat(message, key):
@@ -50,11 +50,11 @@ def get_bgs_wlan_status():
                            'stackoverflow'
                            ]
     for hostname in hostname_list:
-        raw_ping_response = str(os.popen('timeout 3 ping -c 3 %s' % hostname).readlines())
+        raw_ping_response = str(os.popen('timeout 8 ping -c 3 %s' % hostname).readlines())
 
         match_obj = re.compile(r'max/mdev = (.*?)/(.*?)/(.*?)/', re.S)
         re_result = re.findall(match_obj, raw_ping_response)
-        current_host_name=host_nick_name_list[hostname_list.index(hostname)]
+        current_host_name = host_nick_name_list[hostname_list.index(hostname)]
         try:
             ping_response_dist[current_host_name] = 'OK, avg: %s ms' % re_result[0][1]
         except IndexError:

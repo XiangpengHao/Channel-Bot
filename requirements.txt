@@ -1,0 +1,3 @@
+future==0.15.2
+peewee==2.8.0
+python-telegram-bot==3.4
