@@ -106,7 +106,8 @@ def echo(bot, update, args):
 
 def retrive_it(bot, update):
     chat_id = update.message.chat_id
-    if str(chat_id) != '132580810' and str(chat_id) != '-117000013':
+    print(chat_id)
+    if str(chat_id) != '132580810' and str(chat_id) != '-1001066493327':
         all_data_list = '你沒有權限訪問數據庫噢~'
     else:
         all_data_list = statistic_today()

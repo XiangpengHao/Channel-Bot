@@ -11,6 +11,7 @@ def turning_chat(message, key):
     response_content = urllib.request.urlopen(url).read().decode('utf-8')
 
     json_parsed_content = json.loads(response_content)
+    print(json_parsed_content)
     if json_parsed_content['code'] == 200000:
         return_message = ('%s\n%s' % (json_parsed_content['text'], json_parsed_content['url']))
     elif json_parsed_content['code'] == 100000:
