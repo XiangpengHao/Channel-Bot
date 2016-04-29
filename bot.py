@@ -136,7 +136,7 @@ def worst(bot, update):
 
 def get_key():
     try:
-        with open('key.txt') as key_file:
+        with open('../key.txt') as key_file:
             tele_key = key_file.readline()
             turing_key = key_file.readline()
         return tele_key, turing_key
