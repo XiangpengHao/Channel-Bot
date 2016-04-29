@@ -15,7 +15,7 @@ def judge_if_spam_message(message):
     spam_words = ['膜', '233', 'ym',
                   '垃圾', '辣鸡', 'fuck',
                   '水笔', 'WTF',
-                  'wtf','滑稽']
+                  'wtf', '滑稽']
     for word in spam_words:
         if word in message:
             return True
@@ -40,9 +40,9 @@ def write_into_the_database(user_info, content_info):
     check_database()
     try:
         if not user_info[0]:
-            user_info[0]='匿名用戶'
+            user_info[0] = '匿名用戶'
         owned_user = User.get(User.user_name == user_info[0])
-    except IntegrityError:
+    except DoesNotExist:
         owned_user = User.create(user_name=user_info[0], user_id=user_info[1], is_relative=True)
         owned_user.save()
 

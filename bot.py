@@ -79,13 +79,15 @@ def message(bot, update, **kwargs):
     chat_id = update.message.chat_id
     user_info = [update.message.from_user.username, str(chat_id)]
     content_info = update.message.text
-    print(str(user_info) + content_info)
-    if str(chat_id) != '-117000013':
+    if str(chat_id) != '-1001066493327' and str(chat_id) != '132580810':
+        print('not allowed %s' % chat_id)
         return
     if judge_if_spam_message(content_info):
         bot.sendMessage(update.message.chat_id, text='請好好學習，不要水群！')
     else:
+        print(str(user_info) + content_info)
         write_into_the_database(user_info, content_info)
+
     '''
     if write_into_the_database(user_info, content_info):
         database_flag = True
@@ -123,8 +125,8 @@ def chat(bot, update, args):
 
 
 @run_async
-def bgs_wlan_status(bot, update,**kwargs):
-    bot.sendMessage(update.message.chat_id,text='開始測試辣，要等待大約30秒才能出結果~')
+def bgs_wlan_status(bot, update, **kwargs):
+    bot.sendMessage(update.message.chat_id, text='開始測試辣，要等待大約30秒才能出結果~')
     result_message = controllers.get_bgs_wlan_status()
     bot.sendMessage(update.message.chat_id, text=result_message)
     sleep(2)
@@ -132,6 +134,15 @@ def bgs_wlan_status(bot, update,**kwargs):
 
 def worst(bot, update):
     bot.sendMessage(update.message.chat_id, text='PHP is the worst language ever!!!!!!!!!')
+
+
+def exit_the_bot(bot, update):
+    chat_id = update.message.chat_id
+    if str(chat_id) == '132580810':
+        print('Closing...')
+        exit(0)
+    else:
+        bot.sendMessage(update.message.chat_id, text='你沒有權限關閉機器人噢')
 
 
 def get_key():
@@ -162,7 +173,8 @@ def main():
                     'chat': chat,
                     'AC': calculate_permutations_and_combianations,
                     'retrive': retrive_it,
-                    'bgs': bgs_wlan_status}
+                    'bgs': bgs_wlan_status,
+                    'exit': exit_the_bot}
 
     for (command, function) in command_list.items():
         dp.addTelegramCommandHandler(command, function)
