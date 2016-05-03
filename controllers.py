@@ -44,11 +44,11 @@ def get_bgs_wlan_status():
     host_nick_name_list = ['主站',
                            '浙大源',
                            'Gayhub',
-                           'Facebook',
+                           '非死不可',
                            '百毒',
                            '逼乎',
                            'Twitter',
-                           'stackoverflow'
+                           '面向复制粘贴编程的地方'
                            ]
     for hostname in hostname_list:
         raw_ping_response = str(os.popen('timeout 8 ping -c 3 %s' % hostname).readlines())
