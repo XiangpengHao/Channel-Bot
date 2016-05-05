@@ -62,7 +62,7 @@ def get_bgs_wlan_status():
             ping_response_dist[current_host_name] = 'Timeout!'
         except Exception as error:
             ping_response_dist[current_host_name] = error
-    result_info = '今天辦公室網掛了嗎？ \n**********\n'
+    result_info = '今天辦公室網路正常嗎？ \n**********\n'
     for hostname, host_info in ping_response_dist.items():
         result_info += '%s: %s\n' % (hostname, host_info)
     return result_info
