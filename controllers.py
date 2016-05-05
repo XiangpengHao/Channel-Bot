@@ -44,11 +44,11 @@ def get_bgs_wlan_status():
     host_nick_name_list = ['主站',
                            '浙大源',
                            'Gayhub',
-                           'Facebook',
+                           '非死不可',
                            '百毒',
                            '逼乎',
                            'Twitter',
-                           'stackoverflow'
+                           '面向复制粘贴编程的地方'
                            ]
     for hostname in hostname_list:
         raw_ping_response = str(os.popen('timeout 8 ping -c 3 %s' % hostname).readlines())
@@ -62,7 +62,7 @@ def get_bgs_wlan_status():
             ping_response_dist[current_host_name] = 'Timeout!'
         except Exception as error:
             ping_response_dist[current_host_name] = error
-    result_info = '今天辦公室網掛了嗎？ \n**********\n'
+    result_info = '今天辦公室網路正常嗎？ \n**********\n'
     for hostname, host_info in ping_response_dist.items():
         result_info += '%s: %s\n' % (hostname, host_info)
     return result_info
