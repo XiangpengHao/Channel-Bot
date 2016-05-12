@@ -55,7 +55,7 @@ def calculate_permutations_and_combianations(bot, update, args):
 def study(bot, update, args):
     chat_id = update.message.chat_id
     try:
-        due = int(args[0])
+        due = int(args[0]) * 60
         if due < 0:
             bot.sendMessage(chat_id, text='好好學習！！！！')
             return
@@ -64,11 +64,11 @@ def study(bot, update, args):
             bot.sendMessage(chat_id, text='時間到啦，可以休息一會')
 
         job_queue.put(alarm, due, repeat=False)
-        bot.sendMessage(chat_id, text='%s 開始學習了呢, %s秒以後再來找我哦' % (update.message.from_user.username, due))
+        bot.sendMessage(chat_id, text='%s 開始學習了呢, %s分以後再來找我哦' % (update.message.from_user.username, due))
     except IndexError:
-        bot.sendMessage(chat_id, text='Usage: /study <seconds> \n設置學習時間\n好好學習，自習滿績人生巔峯！\nHacked')
+        bot.sendMessage(chat_id, text='Usage: /study <min> \n設置學習時間\n好好學習，自習滿績人生巔峯！\n')
     except ValueError:
-        bot.sendMessage(chat_id, text='Usage: /study <seconds> \n設置學習時間\n好好學習，自習滿績人生巔峯！')
+        bot.sendMessage(chat_id, text='Usage: /study <min> \n設置學習時間\n好好學習，自習滿績人生巔峯！')
 
         # bot.sendMessage(update.message.chat_id, text='%s' % update.message.chat_id)
 
@@ -106,13 +106,17 @@ def echo(bot, update, args):
     bot.sendMessage(update.message.chat_id, text=send_message)
 
 
-def retrive_it(bot, update):
+def retrieve_it(bot, update, args):
+    if len(args[0]):
+        post_day = 0
+    else:
+        post_day = int(args[0])
     chat_id = update.message.chat_id
     print(chat_id)
     if str(chat_id) != '132580810' and str(chat_id) != '-1001066493327':
         all_data_list = '你沒有權限訪問數據庫噢~'
     else:
-        all_data_list = statistic_today()
+        all_data_list = get_statistics(post_day)
     bot.sendMessage(update.message.chat_id, text=str(all_data_list))
 
 
@@ -133,7 +137,7 @@ def bgs_wlan_status(bot, update, **kwargs):
 
 
 def worst(bot, update):
-    bot.sendMessage(update.message.chat_id, text='PHP is the worst language ever!!!!!!!!!')
+    bot.sendMessage(update.message.chat_id, text='PHP is the worst language ever !!!!')
 
 
 def exit_the_bot(bot, update):
@@ -172,7 +176,7 @@ def main():
                     'echo': echo,
                     'chat': chat,
                     'AC': calculate_permutations_and_combianations,
-                    'retrive': retrive_it,
+                    'retreive': retrieve_it,
                     'bgs': bgs_wlan_status,
                     'exit': exit_the_bot}
 

@@ -15,7 +15,7 @@ def judge_if_spam_message(message):
     spam_words = ['膜', '233', 'ym',
                   '垃圾', '辣鸡', 'fuck',
                   '水笔', 'WTF',
-                  'wtf', '滑稽']
+                  'wtf', '滑稽', '蛤']
     for word in spam_words:
         if word in message:
             return True
@@ -64,14 +64,16 @@ def retrive_from_database():
     return all_data_list
 
 
-def statistic_today():
+def get_statistics(past_day):
     '''
     TODO:
     return spam message count
     '''
 
     today_telegram_content = Content.select().where(
-        Content.post_time.day == datetime.datetime.now().day)
+        Content.post_time.day in range(
+            datetime.datetime.now().day - past_day, datetime.datetime.now().day))
+
     # today_telegram_content = Content.select().where(
     #     Content.post_time.day == 20)
     total_message_dict = {}
