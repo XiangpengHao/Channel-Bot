@@ -55,7 +55,7 @@ def calculate_permutations_and_combianations(bot, update, args):
 def study(bot, update, args):
     chat_id = update.message.chat_id
     try:
-        due = int(args[0]) * 60
+        due = int(args[0])
         if due < 0:
             bot.sendMessage(chat_id, text='好好學習！！！！')
             return
@@ -63,7 +63,7 @@ def study(bot, update, args):
         def alarm(bot):
             bot.sendMessage(chat_id, text='時間到啦，可以休息一會')
 
-        job_queue.put(alarm, due, repeat=False)
+        job_queue.put(alarm, due * 60, repeat=False)
         bot.sendMessage(chat_id, text='%s 開始學習了呢, %s分以後再來找我哦' % (update.message.from_user.username, due))
     except IndexError:
         bot.sendMessage(chat_id, text='Usage: /study <min> \n設置學習時間\n好好學習，自習滿績人生巔峯！\n')
@@ -107,10 +107,14 @@ def echo(bot, update, args):
 
 
 def retrieve_it(bot, update, args):
-    if len(args[0]):
-        post_day = 0
-    else:
+    try:
         post_day = int(args[0])
+    except IndexError:
+        post_day = 1
+    except Exception as unhandled_error:
+        print(unhandled_error)
+        post_day = 1
+
     chat_id = update.message.chat_id
     print(chat_id)
     if str(chat_id) != '132580810' and str(chat_id) != '-1001066493327':
@@ -176,7 +180,7 @@ def main():
                     'echo': echo,
                     'chat': chat,
                     'AC': calculate_permutations_and_combianations,
-                    'retreive': retrieve_it,
+                    'retrieve': retrieve_it,
                     'bgs': bgs_wlan_status,
                     'exit': exit_the_bot}
 
