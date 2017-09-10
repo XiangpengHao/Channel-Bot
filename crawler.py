@@ -5,7 +5,7 @@ import requests
 import telegram
 from tokens import tokens
 
-DEBUG = False
+DEBUG = True
 CHANNEL_NAME = '@newsathlh' if not DEBUG else '@hlhstestchanel'
 SOURCES = {
   'theverge': 'https://newsapi.org/v1/articles?source=the-verge&sortBy=top&apiKey=' + tokens['newsapi'],
@@ -43,8 +43,6 @@ def send_unimportant(articles):
   for index, art in enumerate(art_to_post):
     texts += '*%s*' % str(index) + '. (%s)' % art[2][3] + art[0] + '  ' + \
              art[1] + '\n----------------------------------\n'
-  # texts = [x[0] + ' ' + x[1] for x in art_to_post]
-  # texts = '\n'.join(texts)
   bot = telegram.Bot(tokens['bot'])
   bot.send_message(chat_id=CHANNEL_NAME, text=texts, parse_mode=telegram.ParseMode.MARKDOWN, disable_notification=True,
                    disable_web_page_preview=True)
