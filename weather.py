@@ -4,18 +4,18 @@ from datetime import datetime
 import requests
 import telegram
 
-# import RPi.GPIO as GPIO
-# import dht11
-#
-# GPIO.setwarnings(False)
-# GPIO.setmode(GPIO.BCM)
-# GPIO.cleanup()
+import RPi.GPIO as GPIO
+import dht11
 
-# INSTANCE = dht11.DHT11(pin=4)
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+GPIO.cleanup()
+
+INSTANCE = dht11.DHT11(pin=4)
 
 from tokens import tokens
 
-DEBUG = True
+DEBUG = False
 CHANNEL_NAME = '@newsathlh' if not DEBUG else '@hlhstestchanel'
 CITY_CONFIGS = [
   {'name': 'Vancouver', 'timezone': 'Canada/Pacific'},
