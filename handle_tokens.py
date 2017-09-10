@@ -4,7 +4,7 @@ from nltk.stem.snowball import EnglishStemmer
 from nltk.corpus import stopwords
 import time
 
-RATIO_ECON = 1.2
+RATIO_ECON = 1.1
 RATIO_TITLE = 1.4
 
 db = sqlite3.connect('newsbase.sqlite3')
@@ -51,10 +51,6 @@ def read_all_posts() -> list:
 
 
 def run_all(all_posts):
-  # all_post=[title, description, source]
-  # db.close()
-  # db=sqlite3.connect('newsbase.sqlite3')
-  # time.sleep(5)
   flatten = lambda x: [item for sublist in x for item in sublist]
   all_title_dicts = flatten([handle_text(post[0], True, post[2] == 'theverge') for post in all_posts])
   all_desc_dicts = flatten([handle_text(post[1], False, post[2] == 'theverge') for post in all_posts])
@@ -66,7 +62,10 @@ def run_all(all_posts):
 def query_token(token: str) -> float:
   token_info = db.execute('SELECT occr_e,occr_v,occr_t,occr_d FROM tokens WHERE token=?', (token,))
   token_info = token_info.fetchone()
-  return token_info[0] * RATIO_ECON + token_info[1] + token_info[2] * RATIO_TITLE + token_info[2]
+  if not token_info:
+    return 0.0
+  else:
+    return token_info[0] * RATIO_ECON + token_info[1] + token_info[2] * RATIO_TITLE + token_info[2]
 
 
 def query_text(text: str, is_title: bool, is_verge: bool) -> float:
@@ -80,7 +79,6 @@ def query_text(text: str, is_title: bool, is_verge: bool) -> float:
 
 
 if __name__ == '__main__':
-  # nltk.download()
   all_posts = read_all_posts()
   run_all(all_posts)
   pass

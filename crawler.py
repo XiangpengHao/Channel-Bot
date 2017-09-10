@@ -12,6 +12,7 @@ SOURCES = {
   'theverge': 'https://newsapi.org/v1/articles?source=the-verge&sortBy=top&apiKey=' + tokens['newsapi'],
   'theeconomist': 'https://newsapi.org/v1/articles?source=the-economist&sortBy=top&apiKey=' + tokens['newsapi']
 }
+SCORE_THRESHOLD = 80
 
 
 def save_a_post(values):
@@ -96,7 +97,7 @@ def check_emergency(article):
   # for item in word_list:
   #   if item in article['title']:
   #     return True
-  return score > 80
+  return score > SCORE_THRESHOLD
 
 
 if __name__ == '__main__':
