@@ -38,7 +38,6 @@ def send_unimportant(articles):
     short = requests.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBCVSY8fbuu0vJaRGf0cpPuVf8M7e1d96Y',
                           data=json.dumps({'longUrl': art['url']}), headers={'content-type': 'application/json'})
     short = short.content.decode('utf-8')
-    print(short)
     short_url = json.loads(short)['id']
     art_to_post.append((art['title'], short_url, art['source'], art['score']))
   texts = ''
