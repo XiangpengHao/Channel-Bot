@@ -3,6 +3,7 @@ import pytz
 from datetime import datetime
 import requests
 import telegram
+import utilities
 
 import RPi.GPIO as GPIO
 import dht11
@@ -49,12 +50,6 @@ def get_weather() -> str:
   return weather_texts
 
 
-def send_message(text: str):
-  bot = telegram.Bot(tokens['bot'])
-  bot.send_message(chat_id=CHANNEL_NAME, text=text, parse_mode=telegram.ParseMode.MARKDOWN,
-                   disable_notification=True)
-
-
 def get_desktop_weather() -> dict:
   for i in range(10):
     # at least one hit
@@ -84,5 +79,5 @@ def weather_to_emoji(code: int) -> str:
 
 if __name__ == '__main__':
   weather = get_weather()
-  send_message(weather)
+  utilities.send_to_channel(weather)
   # print(get_local_time('Canada/Pacific'))

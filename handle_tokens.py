@@ -5,7 +5,7 @@ from nltk.corpus import stopwords
 from datetime import datetime
 import math
 
-SIGMA = 21
+SIGMA = 30
 
 RATIO_ECON = 1.1
 RATIO_TITLE = 1.4

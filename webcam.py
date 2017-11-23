@@ -26,6 +26,7 @@ def take_photo(bot, update):
     return
   call(["curl", "-s", "-o", "/dev/null", "http://home.haoxp.xyz:7080/0/action/snapshot"])
   
+  sleep(2)
   list_of_files = glob.glob(RAID_PATH)
   latest_file = max(list_of_files, key=os.path.getctime)
   

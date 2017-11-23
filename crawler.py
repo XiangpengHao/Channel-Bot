@@ -12,7 +12,7 @@ SOURCES = {
   'theverge': 'https://newsapi.org/v1/articles?source=the-verge&sortBy=top&apiKey=' + tokens['newsapi'],
   'theeconomist': 'https://newsapi.org/v1/articles?source=the-economist&sortBy=top&apiKey=' + tokens['newsapi']
 }
-SCORE_THRESHOLD = 80
+SCORE_THRESHOLD = 40
 
 
 def save_a_post(values):
@@ -47,8 +47,9 @@ def send_unimportant(articles):
   if not texts:
     return
   bot = telegram.Bot(tokens['bot'])
-  bot.send_message(chat_id=CHANNEL_NAME, text=texts, parse_mode=telegram.ParseMode.MARKDOWN, disable_notification=True,
-                   disable_web_page_preview=True)
+  message_returned = bot.send_message(chat_id=CHANNEL_NAME, text=texts, parse_mode=telegram.ParseMode.MARKDOWN,
+                                      disable_notification=True,
+                                      disable_web_page_preview=True)
 
 
 def get_posts():
