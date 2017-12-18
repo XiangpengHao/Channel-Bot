@@ -17,7 +17,7 @@ GPIO.cleanup()
 
 INSTANCE = dht11.DHT11(pin=4)
 
-from tokens import tokens
+from config import tokens
 
 DEBUG = False
 CHANNEL_NAME = '@newsathlh' if not DEBUG else '@hlhstestchanel'

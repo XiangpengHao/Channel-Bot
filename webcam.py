@@ -4,7 +4,7 @@ import logging
 
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-from tokens import tokens
+from config import tokens
 from  subprocess import call
 from time import sleep
 import os

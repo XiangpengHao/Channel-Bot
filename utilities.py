@@ -1,5 +1,5 @@
 import telegram
-from tokens import tokens
+from config import tokens
 import sqlite3
 
 DEBUG = False

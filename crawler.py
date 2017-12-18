@@ -3,7 +3,7 @@ import sqlite3
 
 import requests
 import telegram
-from tokens import tokens
+from config import tokens
 import token_learning
 
 DEBUG = False
