@@ -11,6 +11,7 @@ import os
 import glob
 
 RAID_PATH = "/mnt/raid1/hao/webcam/*.jpg"
+LAST_PATH = '/mnt/raid1/hao/webcam/lastsnap.jpg'
 
 updater = Updater(token=tokens['bot'])
 dispatcher = updater.dispatcher
@@ -24,13 +25,13 @@ def take_photo(bot, update):
   if update.message.chat_id not in tokens['allowed_id']:
     bot.send_message(chat_id=update.message.chat_id, text="Sorry, not a chance.")
     return
-  call(["curl", "-s", "-o", "/dev/null", "http://home.haoxp.xyz:7080/0/action/snapshot"])
+  call(["curl", "-s", "-o", "/dev/null", "http://home.haoxp.xyz:7070/0/action/snapshot"])
   
   sleep(2)
-  list_of_files = glob.glob(RAID_PATH)
-  latest_file = max(list_of_files, key=os.path.getctime)
+  # list_of_files = glob.glob(RAID_PATH)
+  # latest_file = max(list_of_files, key=os.path.getctime)
   
-  bot.send_photo(chat_id=update.message.chat_id, photo=open(latest_file, 'rb'))
+  bot.send_photo(chat_id=update.message.chat_id, photo=open(LAST_PATH, 'rb'))
 
 
 def echo(bot, update):

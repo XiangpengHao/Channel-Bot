@@ -4,7 +4,7 @@ import sqlite3
 import requests
 import telegram
 from tokens import tokens
-import handle_tokens
+import token_learning
 
 DEBUG = False
 CHANNEL_NAME = '@newsathlh' if not DEBUG else '@hlhstestchanel'
@@ -80,16 +80,16 @@ def update_token_database(items: list):
   items = [[x['title'],
             x['description'],
             x['source']] for x in items]
-  handle_tokens.run_all(items)
+  token_learning.run_all(items)
 
 
 def check_emergency(article):
-  score = handle_tokens.query_text(article['title'],
-                                   is_title=True,
-                                   is_verge=article['source'] == 'theverge')
-  score += handle_tokens.query_text(article['description'],
-                                    is_title=False,
+  score = token_learning.query_text(article['title'],
+                                    is_title=True,
                                     is_verge=article['source'] == 'theverge')
+  score += token_learning.query_text(article['description'],
+                                     is_title=False,
+                                     is_verge=article['source'] == 'theverge')
   article['score'] = score
   # word_list = ['Microsoft', 'Samsung', 'Windows', 'Google', 'Apple', 'Amazon', 'Facebook',
   #              'Snapchat', 'Tesla', 'Oneplus', 'Ameri', 'Linkin', 'Instagram',

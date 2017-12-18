@@ -5,7 +5,10 @@ import requests
 import telegram
 import utilities
 
-import RPi.GPIO as GPIO
+try:
+  import RPi.GPIO as GPIO
+except ImportError:
+  exit(0)
 import dht11
 
 GPIO.setwarnings(False)

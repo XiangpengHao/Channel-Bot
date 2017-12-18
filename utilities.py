@@ -5,7 +5,7 @@ import sqlite3
 DEBUG = False
 CHANNEL_NAME = '@newsathlh' if not DEBUG else '@hlhstestchanel'
 db = sqlite3.connect('newsbase.sqlite3')
-MESSAGE_LIMIT = 4
+MESSAGE_LIMIT = 3
 
 
 def send_to_channel(message: str, disable_preview=True):
