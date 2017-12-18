@@ -1,7 +1,9 @@
 import pymysql
 from config import MYSQL_CONFIG
+import datetime
 
-
+# TODO: using with syntax
+# https://stackoverflow.com/questions/865115/how-do-i-correctly-clean-up-a-python-object
 class Connection():
   def __init__(self, db_name='iot_data'):
     self._db_name = db_name
@@ -20,11 +22,24 @@ class Connection():
     )
     return mysql_conn
   
-  def add_message(self, message_id: int, date: int, text: str, channel_name: str):
-    sql = 'insert into {table_name}(date,text,chanelname,message_id) values(%s,%s,%s,%s)'.format(
+  def insert_message(self, message_id: int, date: datetime, text: str, channel_name: str):
+    sql = 'insert into {table_name}(date,text,channel_name,message_id) values(%s,%s,%s,%s)'.format(
       table_name=self._table_name)
     self._cursor.execute(sql, (date, text, channel_name, message_id))
-    self._connection.commit()
+    self.commit()
+  
+  def mark_delete(self, message_id: int, channel_name: str):
+    sql = 'update {table_name} set deleted=1 where `message_id`=%s and `channel_name`=%s'.format(
+      table_name=self._table_name)
+    self._cursor.execute(sql, (message_id, channel_name))
+    self.commit()
+  
+  def get_yesterday_not_deleted(self) -> list:
+    sql = 'select * from {table_name} where deleted=0 and `date` between subdate(current_date,1) and curdate()'.format(
+      table_name=self._table_name
+    )
+    self._cursor.execute(sql)
+    return self._cursor.fetchall()
   
   @property
   def cursor(self) -> pymysql.cursors:
