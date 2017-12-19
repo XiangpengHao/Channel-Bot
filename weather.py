@@ -3,7 +3,6 @@ import pytz
 from datetime import datetime
 import requests
 import telegram
-import utilities
 
 try:
   import RPi.GPIO as GPIO
