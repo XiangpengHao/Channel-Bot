@@ -1,5 +1,5 @@
-{
-  "theverge": [{
+rv = {
+  "the Verge": [{
     "author": "Dan Seifert",
     "title": "Amazon Echo Spot review: an almost-perfect smart alarm clock",
     "description": "‘Alexa, are you watching me?’",
@@ -63,7 +63,7 @@
     "urlToImage": "https://cdn.vox-cdn.com/thumbor/5mwYtvHAqIgtoUn9Y9rGNH6d7vs=/0x383:1100x959/fit-in/1200x630/cdn.vox-cdn.com/assets/3406055/304086.jpg",
     "publishedAt": "2017-12-18T21:58:09Z"
   }],
-  "theeconomist": [{
+  "the Economist": [{
     "author": "The Economist",
     "title": "What Sebastián Piñera’s victory in Chile’s presidential election means",
     "description": "A resounding win for the conservative candidate reaffirms Chileans’ centrist leanings",

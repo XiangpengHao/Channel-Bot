@@ -2,8 +2,7 @@ import pymysql
 from config import MYSQL_CONFIG
 import datetime
 
-# TODO: using with syntax
-# https://stackoverflow.com/questions/865115/how-do-i-correctly-clean-up-a-python-object
+
 class Connection():
   def __init__(self, db_name='iot_data'):
     self._db_name = db_name
