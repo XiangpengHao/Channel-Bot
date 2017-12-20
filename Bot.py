@@ -1,6 +1,6 @@
 import telegram, contextlib
 from config import tokens
-from Connection import Connection
+from Connection import ConnectionChannel
 
 
 # usage:
@@ -11,7 +11,7 @@ def Bot(channel_name: str):
   class Bot():
     def __init__(self, channel_name: str):
       self._bot = telegram.Bot(tokens['bot'])
-      self._connection = Connection()
+      self._connection = ConnectionChannel()
       self._channel_name = channel_name
     
     def send_message(self, message: str, disable_notification=True, disable_preview=True,

@@ -17,8 +17,10 @@ def send_news():
     important = rv['important']
     unimportant = rv['unimportant']
     for item in important:
+      if not item: continue
       bot.send_message(item)
     for item in unimportant:
+      if not item: continue
       bot.send_message(item, disable_preview=True, disable_notification=True, disable_web_page_preview=True)
 
 
