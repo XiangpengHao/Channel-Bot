@@ -12,8 +12,8 @@ class WeatherProvider():
   def _get_weather_from_web(self) -> dict:
     for city, id in self._city_config.items():
       weather_url = WEATHER_URL + '&id={id}&appid={appid}'.format(id=id, appid=tokens['open_weather'])
-      rv = requests.get(weather_url).content.decode()
-      rv: Dict = json.loads(rv)
+      rv_raw: str = requests.get(weather_url).content.decode()
+      rv: Dict = json.loads(rv_raw)
       self._weather_info[city] = rv
     return self._weather_info
   

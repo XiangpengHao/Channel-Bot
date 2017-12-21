@@ -1,14 +1,15 @@
 import pymysql
 from config import MYSQL_CONFIG
 import datetime
+from typing import List
 
 
 class ConnectionBase():
   def __init__(self, db_name='iot_data', table_name='channel'):
     self._db_name: str = db_name
     self._table_name: str = table_name
-    self._connection: pymysql.cursors = self._get_connection()
-    self._cursor = self._connection.cursor()
+    self._connection = self._get_connection()
+    self._cursor: pymysql.cursors.Cursor = self._connection.cursor()
   
   def __enter__(self):
     return self
@@ -16,19 +17,19 @@ class ConnectionBase():
   def __exit__(self, exc_type, exc_val, exc_tb):
     self._connection.close()
   
-  def _get_connection(self) -> pymysql.cursors:
-    mysql_conn: pymysql.cursors = pymysql.connect(
+  def _get_connection(self):
+    mysql_conn = pymysql.connect(
       host=MYSQL_CONFIG['host_name'],
       user=MYSQL_CONFIG['user'],
       password=MYSQL_CONFIG['password'],
-      port=MYSQL_CONFIG['server_port'],
+      port=int(MYSQL_CONFIG['server_port']),
       db=self._db_name,
       charset='utf8'
     )
     return mysql_conn
   
   @property
-  def cursor(self) -> pymysql.cursors:
+  def cursor(self) -> pymysql.cursors.Cursor:
     return self._cursor
   
   def close(self):
@@ -53,18 +54,18 @@ class ConnectionNews(ConnectionBase):
     self.cursor.execute(sql, (author, title, description, url, published_at, source))
     self.commit()
   
-  def check_existence(self, url: str) -> int:
-    sql = 'SELECT exists(SELECT `url` FROM `news` WHERE `url`=%s LIMIT 1)'
+  def check_existence(self, url: str):
+    sql: str = 'SELECT exists(SELECT `url` FROM `news` WHERE `url`=%s LIMIT 1)'
     self.cursor.execute(sql, (url,))
-    exist = self.cursor.fetchone()
-    return exist[0]
+    item_exist = self.cursor.fetchone()
+    return int(item_exist[0])
 
 
 class ConnectionChannel(ConnectionBase):
   def __init__(self, table_name='channel'):
     ConnectionBase.__init__(self, 'iot_data', table_name)
   
-  def insert_message(self, message_id: int, date: datetime, text: str, channel_name: str):
+  def insert_message(self, message_id: int, date: datetime.datetime, text: str, channel_name: str):
     sql = 'insert into {table_name}(date,text,channel_name,message_id) values(%s,%s,%s,%s)'.format(
       table_name=self._table_name)
     self._cursor.execute(sql, (date, text, channel_name, message_id))
@@ -76,11 +77,10 @@ class ConnectionChannel(ConnectionBase):
     self._cursor.execute(sql, (message_id, channel_name))
     self.commit()
   
-  def get_yesterday_not_deleted(self, channel_name: str) -> list:
+  def get_yesterday_not_deleted(self, channel_name: str) -> List:
     sql = 'select message_id from {table_name} where deleted=0 and `channel_name`=%s and `date` between subdate(current_date,2) and subdate(current_date,1)'.format(
       table_name=self._table_name
     )
     self._cursor.execute(sql, (channel_name,))
     ids = self.cursor.fetchall()
-    ids = [a[0] for a in ids]
-    return ids
+    return [int(a[0]) for a in ids]

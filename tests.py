@@ -1,4 +1,4 @@
-from Bot import Bot
+from Bot import Bot, BotType
 from NewsProvider import NewsProvider
 import os
 

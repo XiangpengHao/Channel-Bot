@@ -12,17 +12,13 @@ class NewsProvider():
     self.post_list: Dict = {}
   
   def _get_posts(self) -> dict:
-    if DEBUG:
-      import sample_rv
-      self.post_list = sample_rv.rv
-      return self.post_list
     for source, url in self.sources.items():
       result = requests.get(url).content.decode()
       result_json = json.loads(result)
       self.post_list[source] = result_json['articles']
     return self.post_list
   
-  def _format_all(self) -> Dict[str]:
+  def _format_all(self) -> Dict[str, List[str]]:
     important: List[str] = [self._format_important(a) for a in self.post_list['important']]
     unimportant: List[Tuple[str, str]] = [self._format_unimportant(a) for a in self.post_list['unimportant']]
     unimportant_text: str = ''
@@ -40,7 +36,7 @@ class NewsProvider():
   def _format_important(self, article: dict) -> str:
     return '[{title}]({url})'.format(title=article['title'], url=article['url'])
   
-  def _format_unimportant(self, article: dict) -> tuple:
+  def _format_unimportant(self, article: dict) -> Tuple[str, str]:
     return (article['source'], '({importance}) [{title}]({url})\n'.format(
       source=article['source'], importance=article['importance'],
       title=article['title'], url=article['url']
@@ -68,11 +64,11 @@ class NewsProvider():
     new_unimportant: List = []
     
     for item in self.post_list['important']:
-      exist: int = conn.check_existence(item['url'])
-      if exist == 0: new_important.append(item)
+      exists: int = conn.check_existence(item['url'])
+      if exists == 0: new_important.append(item)
     for item in self.post_list['unimportant']:
-      exist: int = conn.check_existence(item['url'])
-      if exist == 0: new_unimportant.append(item)
+      exists: int = conn.check_existence(item['url'])
+      if exists == 0: new_unimportant.append(item)
     
     self.post_list = {'important': new_important, 'unimportant': new_unimportant}
     return self.post_list
@@ -89,11 +85,11 @@ class NewsProvider():
   def check_importance(title: str, desc: str, source: str) -> int:
     return random.randrange(0, 100)
   
-  def get_send_message(self) -> Dict[str]:
+  def get_send_message(self) -> Dict[str, List[str]]:
     self._get_posts()
     self._classify()
     with ConnectionNews() as conn:
       self._check_existence_and_filter(conn)
       self._save_to_news_db(conn)
-    rv: Dict[str] = self._format_all()
+    rv: Dict[str, List[str]] = self._format_all()
     return rv
