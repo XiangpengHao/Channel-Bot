@@ -1,7 +1,8 @@
-import telegram, contextlib
+import telegram
+from telegram import TelegramError
 from config import tokens
 from Connection import ConnectionChannel
-from typing import List, Callable
+from typing import List
 
 
 class Bot():
@@ -28,7 +29,12 @@ class Bot():
   
   def delete_message(self, message_id: int) -> bool:
     self._connection.mark_delete(message_id=message_id, channel_name=self._channel_name)
-    return self._bot.delete_message(chat_id=self._channel_name, message_id=message_id)
+    try:
+      result = self._bot.delete_message(chat_id=self._channel_name, message_id=message_id)
+    except TelegramError as e:
+      print(e)
+      return False
+    return result
   
   def clean_channel(self):
     yesterday_not_deleted: List[int] = self._connection.get_yesterday_not_deleted(self._channel_name)
