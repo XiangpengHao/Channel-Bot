@@ -6,11 +6,11 @@ import os, sys
 CHANNEL_NAME = '@hlhstestchanel' if ('BOT_DEBUG' in os.environ) else '@newsathlh'
 
 
-def clean_message(bot):
+def clean_message(bot: Bot):
   bot.clean_channel()
 
 
-def send_news(bot):
+def send_news(bot: Bot):
   news = NewsProvider()
   rv = news.get_send_message()
   
@@ -24,7 +24,7 @@ def send_news(bot):
     bot.send_message(item, disable_web_page_preview=True)
 
 
-def send_weather(bot):
+def send_weather(bot: Bot):
   weather = WeatherProvider()
   rv = weather.get_all_weather()
   bot.send_message(rv)

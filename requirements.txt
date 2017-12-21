@@ -1,4 +1,5 @@
 python-telegram-bot
 requests
+pymysql
 pytz
 Adafruit_DHT

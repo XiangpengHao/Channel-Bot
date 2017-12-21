@@ -1,16 +1,17 @@
 import json, requests, random, os
 from config import NEWS_SOURCES
 from Connection import ConnectionNews
+from typing import Dict, List, Tuple
 
 DEBUG = 'BOT_DEBUG' in os.environ
 
 
 class NewsProvider():
   def __init__(self, sources=NEWS_SOURCES):
-    self.sources = sources
-    self.post_list = {}
+    self.sources: Dict[str, str] = sources
+    self.post_list: Dict = {}
   
-  def _get_posts(self):
+  def _get_posts(self) -> dict:
     if DEBUG:
       import sample_rv
       self.post_list = sample_rv.rv
@@ -21,16 +22,13 @@ class NewsProvider():
       self.post_list[source] = result_json['articles']
     return self.post_list
   
-  def _format_all(self) -> dict:
-    important = self.post_list['important']
-    unimportant = self.post_list['unimportant']
-    
-    important = [self._format_important(a) for a in important]
-    unimportant = [self._format_unimportant(a) for a in unimportant]
-    unimportant_text = ''
+  def _format_all(self) -> Dict[str]:
+    important: List[str] = [self._format_important(a) for a in self.post_list['important']]
+    unimportant: List[Tuple[str, str]] = [self._format_unimportant(a) for a in self.post_list['unimportant']]
+    unimportant_text: str = ''
     
     if len(unimportant) > 0:
-      prev_source = unimportant[0][0]
+      prev_source: str = unimportant[0][0]
       unimportant_text += '*{source}* --------------------\n\n'.format(source=prev_source)
       for index, item in enumerate(unimportant):
         if item[0] != prev_source:
@@ -49,8 +47,8 @@ class NewsProvider():
     ))
   
   def _classify(self) -> dict:
-    important = []
-    unimportant = []
+    important: List[Dict] = []
+    unimportant: List[Dict] = []
     for source, articles in self.post_list.items():
       for article in articles:
         importance = self.check_importance(
@@ -66,14 +64,14 @@ class NewsProvider():
     return self.post_list
   
   def _check_existence_and_filter(self, conn):
-    new_important = []
-    new_unimportant = []
+    new_important: List = []
+    new_unimportant: List = []
     
     for item in self.post_list['important']:
-      exist = conn.check_existence(item['url'])
+      exist: int = conn.check_existence(item['url'])
       if exist == 0: new_important.append(item)
     for item in self.post_list['unimportant']:
-      exist = conn.check_existence(item['url'])
+      exist: int = conn.check_existence(item['url'])
       if exist == 0: new_unimportant.append(item)
     
     self.post_list = {'important': new_important, 'unimportant': new_unimportant}
@@ -91,11 +89,11 @@ class NewsProvider():
   def check_importance(title: str, desc: str, source: str) -> int:
     return random.randrange(0, 100)
   
-  def get_send_message(self) -> dict:
+  def get_send_message(self) -> Dict[str]:
     self._get_posts()
     self._classify()
     with ConnectionNews() as conn:
       self._check_existence_and_filter(conn)
       self._save_to_news_db(conn)
-    rv = self._format_all()
+    rv: Dict[str] = self._format_all()
     return rv

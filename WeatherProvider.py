@@ -1,18 +1,19 @@
 import requests, json, sys
 from config import WEATHER_URL, CITY_CONFIG, tokens
+from typing import Dict
 
 
 class WeatherProvider():
   def __init__(self, city_config=CITY_CONFIG):
-    self._city_config = city_config
-    self._weather_info = {}
-    self._sensor_info = {}
+    self._city_config: Dict[str, str] = city_config
+    self._weather_info: Dict = {}
+    self._sensor_info: Dict[str, float] = {}
   
   def _get_weather_from_web(self) -> dict:
     for city, id in self._city_config.items():
       weather_url = WEATHER_URL + '&id={id}&appid={appid}'.format(id=id, appid=tokens['open_weather'])
       rv = requests.get(weather_url).content.decode()
-      rv = json.loads(rv)
+      rv: Dict = json.loads(rv)
       self._weather_info[city] = rv
     return self._weather_info
   
@@ -27,7 +28,7 @@ class WeatherProvider():
     return self._sensor_info
   
   def _format_all(self) -> str:
-    rv = ''
+    rv: str = ''
     for city, weather in self._weather_info.items():
       rv += self._format_one_web_weather(weather)
       rv += '\n----------------\n'

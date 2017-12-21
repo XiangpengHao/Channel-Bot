@@ -5,9 +5,9 @@ import datetime
 
 class ConnectionBase():
   def __init__(self, db_name='iot_data', table_name='channel'):
-    self._db_name = db_name
-    self._table_name = table_name
-    self._connection = self._get_connection()
+    self._db_name: str = db_name
+    self._table_name: str = table_name
+    self._connection: pymysql.cursors = self._get_connection()
     self._cursor = self._connection.cursor()
   
   def __enter__(self):
@@ -17,7 +17,7 @@ class ConnectionBase():
     self._connection.close()
   
   def _get_connection(self) -> pymysql.cursors:
-    mysql_conn = pymysql.connect(
+    mysql_conn: pymysql.cursors = pymysql.connect(
       host=MYSQL_CONFIG['host_name'],
       user=MYSQL_CONFIG['user'],
       password=MYSQL_CONFIG['password'],
