@@ -76,11 +76,11 @@ class ConnectionChannel(ConnectionBase):
     self._cursor.execute(sql, (message_id, channel_name))
     self.commit()
   
-  def get_yesterday_not_deleted(self) -> list:
-    sql = 'select message_id from {table_name} where deleted=0 and `date` between subdate(current_date,2) and subdate(current_date,1)'.format(
+  def get_yesterday_not_deleted(self, channel_name: str) -> list:
+    sql = 'select message_id from {table_name} where deleted=0 and `channel_name`=%s and `date` between subdate(current_date,2) and subdate(current_date,1)'.format(
       table_name=self._table_name
     )
-    self._cursor.execute(sql)
+    self._cursor.execute(sql, (channel_name,))
     ids = self.cursor.fetchall()
     ids = [a[0] for a in ids]
     return ids

@@ -29,7 +29,7 @@ def Bot(channel_name: str):
       return self._bot.delete_message(chat_id=self._channel_name, message_id=message_id)
     
     def clean_channel(self):
-      yesterday_not_deleted = self._connection.get_yesterday_not_deleted()
+      yesterday_not_deleted = self._connection.get_yesterday_not_deleted(self._channel_name)
       for message in yesterday_not_deleted:
         self.delete_message(message_id=message)
     
