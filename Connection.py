@@ -47,11 +47,12 @@ class ConnectionNews(ConnectionBase):
   def __init__(self, table_name='news'):
     ConnectionBase.__init__(self, 'iot_data', table_name)
   
-  def insert_news(self, author: str, title: str, description: str, url: str, published_at: str, source: str):
-    sql = 'INSERT INTO {table_name}(author,title,description,url,`date`,`source`) VALUES(%s,%s,%s,%s,%s,%s)'.format(
+  def insert_news(self, author: str, title: str, description: str, url: str, published_at: str, source: str,
+                  importance: int):
+    sql = 'INSERT INTO {table_name}(author,title,description,url,`date`,`source`,`importance`) VALUES(%s,%s,%s,%s,%s,%s,%s)'.format(
       table_name=self._table_name
     )
-    self.cursor.execute(sql, (author, title, description, url, published_at, source))
+    self.cursor.execute(sql, (author, title, description, url, published_at, source, importance))
     self.commit()
   
   def check_existence(self, url: str):

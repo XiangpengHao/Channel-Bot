@@ -32,6 +32,7 @@ def send_weather(bot: Bot):
 
 if __name__ == '__main__':
   with Bot(CHANNEL_NAME) as bot:
+    clean_message(bot)
     if sys.argv[1] == 'all':
       send_news(bot)
       send_weather(bot)
@@ -39,5 +40,3 @@ if __name__ == '__main__':
       send_news(bot)
     elif sys.argv[1] == 'weather':
       send_weather(bot)
-    
-    clean_message(bot)

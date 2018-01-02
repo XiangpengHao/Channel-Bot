@@ -76,10 +76,10 @@ class NewsProvider():
   def _save_to_news_db(self, conn):
     for item in self.post_list['important']:
       conn.insert_news(item['author'], item['title'], item['description'], item['url'], item['publishedAt'],
-                       item['source'])
+                       item['source'], item['importance'])
     for item in self.post_list['unimportant']:
       conn.insert_news(item['author'], item['title'], item['description'], item['url'], item['publishedAt'],
-                       item['source'])
+                       item['source'], item['importance'])
   
   @staticmethod
   def check_importance(title: str, desc: str, source: str) -> int:

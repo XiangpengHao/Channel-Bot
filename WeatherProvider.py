@@ -2,6 +2,8 @@ import requests, json, sys
 from config import WEATHER_URL, CITY_CONFIG, tokens
 from typing import Dict
 
+BACKEND_URL = 'https://backend.haoxp.xyz/weather'
+
 
 class WeatherProvider():
   def __init__(self, city_config=CITY_CONFIG):
@@ -35,6 +37,11 @@ class WeatherProvider():
     rv += self._format_sensor_weather()
     return rv
   
+  def save_weather_to_db(self):
+    payload = {'temp': self._sensor_info['temp'], 'humidity': self._sensor_info['hum']}
+    rv = requests.post(BACKEND_URL, payload)
+    print(rv.content.decode())
+  
   def _format_one_web_weather(self, weather_item: dict) -> str:
     return '*{city}*\n' \
            'Max temp: {max_temp}°C\n' \
@@ -53,4 +60,5 @@ class WeatherProvider():
   def get_all_weather(self):
     self._get_weather_from_sensor()
     self._get_weather_from_web()
+    self.save_weather_to_db()
     return self._format_all()
