@@ -38,6 +38,8 @@ class WeatherProvider():
     return rv
   
   def save_weather_to_db(self):
+    if self._sensor_info['hum'] == -1:
+      return
     payload = {'temp': self._sensor_info['temp'], 'humidity': self._sensor_info['hum']}
     rv = requests.post(BACKEND_URL, payload)
     print(rv.content.decode())
